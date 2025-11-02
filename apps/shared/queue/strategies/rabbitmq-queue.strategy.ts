@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { connect, ChannelModel } from 'amqplib';
 import { QueueStrategy } from '../interfaces/queue-strategy.interface';
 
@@ -6,13 +6,19 @@ import { QueueStrategy } from '../interfaces/queue-strategy.interface';
 export class RabbitMQQueueStrategy implements QueueStrategy, OnModuleInit {
   private connection: ChannelModel | null = null;
   private readonly connectionUrl: string;
-
+  private readonly logger = new Logger(RabbitMQQueueStrategy.name);
   constructor() {
     this.connectionUrl = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
   }
 
   async onModuleInit(): Promise<void> {
-    this.connection = await connect(this.connectionUrl);
+    try {
+      this.connection = await connect(this.connectionUrl);
+      this.logger.log('RabbitMQ connection initialized!');
+    } catch (error) {
+      this.logger.error('Failed to connect to RabbitMQ', error);
+      throw error;
+    }
   }
 
   async sendJobToQueue(type: string, data: Record<string, any>): Promise<void> {
