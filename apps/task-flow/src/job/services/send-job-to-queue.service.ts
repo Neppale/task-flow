@@ -1,15 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { LoggerService } from '../../../../../libs/config/src/logger/services/logger.service';
+import { Injectable, Logger } from '@nestjs/common';
 import { QueueService } from '../../../../shared/queue/services/queue.service';
 
 @Injectable()
 export class SendJobToQueueService {
-  constructor(
-    private readonly queueService: QueueService,
-    private readonly logger: LoggerService,
-  ) {}
+  private readonly logger = new Logger(SendJobToQueueService.name);
+  constructor(private readonly queueService: QueueService) {}
 
-  async sendJobToQueue(type: string, data: Record<string, any>) {
+  async sendJobToQueue(type: string, data: Record<string, any>): Promise<void> {
     this.logger.log(
       `Sending job to queue: ${type} with data: ${JSON.stringify(data)}`,
     );
