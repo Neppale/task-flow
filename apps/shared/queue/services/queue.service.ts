@@ -9,7 +9,7 @@ export class QueueService {
     private readonly queueStrategy: QueueStrategy,
   ) {}
 
-  async sendJobToQueue(type: string, data: Record<string, any>): Promise<void> {
-    await this.queueStrategy.sendJobToQueue(type, data);
+  async send(type: string, data: Record<string, any>): Promise<void> {
+    await this.queueStrategy.send(type, data);
   }
 }

@@ -21,7 +21,7 @@ export class RabbitMQQueueStrategy implements QueueStrategy, OnModuleInit {
     }
   }
 
-  async sendJobToQueue(type: string, data: Record<string, any>): Promise<void> {
+  async send(type: string, data: Record<string, any>): Promise<void> {
     if (!this.connection) {
       throw new Error('RabbitMQ channel is not initialized');
     }

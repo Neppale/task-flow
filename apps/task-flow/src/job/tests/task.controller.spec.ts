@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { JobController } from '../job.controller';
-import { SendJobToQueueService } from '../services/send-job-to-queue.service';
+import { TaskController } from '../task.controller';
+import { SendTaskToQueueService } from '../services/send-job-to-queue.service';
 
-describe('TaskFlowController', () => {
-  let appController: JobController;
+describe('TaskController', () => {
+  let appController: TaskController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [JobController],
-      providers: [SendJobToQueueService],
+      controllers: [TaskController],
+      providers: [SendTaskToQueueService],
     }).compile();
 
-    appController = app.get<JobController>(JobController);
+    appController = app.get<TaskController>(TaskController);
   });
 
   it('should send job to queue', () => {

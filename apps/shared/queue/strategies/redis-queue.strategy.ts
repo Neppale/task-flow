@@ -52,7 +52,7 @@ export class RedisQueueStrategy
     return this.queues.get(queueName)!;
   }
 
-  async sendJobToQueue(type: string, data: Record<string, any>): Promise<void> {
+  async send(type: string, data: Record<string, any>): Promise<void> {
     const queueName = `queue_${type}`;
     const queue = this.getQueue(queueName);
 
