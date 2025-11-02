@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable, Logger } from '@nestjs/common';
 import { QueueService } from '../../../../shared/queue/services/queue.service';
-import { CreateTaskService } from '../../../../../libs/prisma/src/services/create-task.service';
-import { UpdateTaskStatusService } from '../../../../../libs/prisma/src/services/update-task-status.service';
-import { TaskStatus } from '@prisma/client';
+import { CreateTaskService } from './create-task.service';
+import { UpdateTaskStatusService } from './update-task-status.service';
+import { TaskStatus, TaskType } from '@prisma/client';
 
 @Injectable()
 export class SendTaskToQueueService {
@@ -17,7 +18,7 @@ export class SendTaskToQueueService {
   ) {}
 
   async send(
-    type: string,
+    type: TaskType,
     data: Record<string, any>,
   ): Promise<{ taskId: string }> {
     this.logger.log(

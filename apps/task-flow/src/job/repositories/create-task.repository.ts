@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import { TaskStatus, Task } from '@prisma/client';
+import { PrismaService } from '../../../../shared/prisma/services/prisma.service';
+import { TaskStatus, Task, TaskType } from '@prisma/client';
 
 export interface CreateTaskData {
-  type: string;
+  type: TaskType;
   data: string;
   status: TaskStatus;
 }

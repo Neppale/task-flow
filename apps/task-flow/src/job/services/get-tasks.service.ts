@@ -3,7 +3,7 @@ import {
   ListTaskRepository,
   ListTaskFilters,
 } from '../repositories/list-task.repository';
-import { EncryptionService } from '../encryption.service';
+import { EncryptionService } from '../../../../shared/prisma/services/encryption.service';
 import { Task, TaskStatus } from '@prisma/client';
 
 export interface TaskWithDecryptedData {

@@ -1,6 +1,7 @@
 import { Controller, Post } from '@nestjs/common';
 import { SendTaskToQueueService } from './services/send-task-to-queue.service';
 import { Body } from '@nestjs/common';
+import type { CreateTaskDto } from 'apps/shared/types/dto/create-task.dto';
 
 @Controller()
 export class TaskController {
@@ -10,8 +11,8 @@ export class TaskController {
 
   @Post()
   async send(
-    @Body() body: { type: string; data: Record<string, any> },
+    @Body() { type, data }: CreateTaskDto,
   ): Promise<{ taskId: string }> {
-    return await this.sendTaskToQueueService.send(body.type, body.data);
+    return await this.sendTaskToQueueService.send(type, data);
   }
 }

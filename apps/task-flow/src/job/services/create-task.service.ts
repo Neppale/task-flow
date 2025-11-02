@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateTaskRepository } from '../repositories/create-task.repository';
-import { EncryptionService } from '../encryption.service';
-import { TaskStatus } from '@prisma/client';
+import { EncryptionService } from '../../../../shared/prisma/services/encryption.service';
+import { TaskStatus, TaskType } from '@prisma/client';
 
 export interface CreateTaskInput {
-  type: string;
+  type: TaskType;
   data: Record<string, any>;
   status?: TaskStatus;
 }

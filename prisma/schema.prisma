@@ -13,9 +13,13 @@ enum TaskStatus {
   FAILED
 }
 
+enum TaskType {
+  REQUEST
+}
+
 model Task {
   id           String      @id @default(uuid())
-  type         String
+  type         TaskType
   data         String
   status       TaskStatus  @default(PENDING)
   createdAt    DateTime    @default(now())
