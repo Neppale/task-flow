@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { TaskType } from '@prisma/client';
-import { IsEnum, IsNotEmpty, IsObject, ValidateNested } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsObject } from 'class-validator';
 
 export class CreateTaskDto {
   @IsEnum(TaskType)
@@ -9,6 +9,5 @@ export class CreateTaskDto {
 
   @IsObject()
   @IsNotEmpty()
-  @ValidateNested()
   data: Record<string, any>;
 }

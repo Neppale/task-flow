@@ -22,8 +22,8 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@Config/config": ["libs/config/logger"],
-      "@Config/config/*": ["libs/config/logger/*"]
+      "@Config/config": ["utils/config/logger"],
+      "@Config/config/*": ["utils/config/logger/*"]
     }
   }
 }
