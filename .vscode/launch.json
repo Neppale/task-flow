@@ -6,8 +6,8 @@
       "request": "launch",
       "name": "Task Flow",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/apps/task-flow/src/job/main.ts",
-      "preLaunchTask": "tsc: build - tsconfig.json",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:dev"],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }
   ]

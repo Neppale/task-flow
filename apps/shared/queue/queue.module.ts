@@ -8,9 +8,12 @@ import { QUEUE_STRATEGY_TOKEN, QueueType } from './queue-type.enum';
 const queueStrategyProvider: Provider = {
   provide: QUEUE_STRATEGY_TOKEN,
   useFactory: (): QueueStrategy => {
-    const queueType =
-      QueueType[process.env.QUEUE_TYPE as keyof typeof QueueType] ??
-      QueueType.REDIS;
+    const queueType = process.env.QUEUE_TYPE;
+
+    console.log(`TaskFlow is using ${queueType} queue strategy.`);
+    if (!queueType) {
+      throw new Error('QUEUE_TYPE is not set');
+    }
 
     switch (queueType) {
       case QueueType.RABBITMQ:
