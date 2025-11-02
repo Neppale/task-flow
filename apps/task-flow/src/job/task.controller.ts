@@ -1,15 +1,17 @@
 import { Controller, Post } from '@nestjs/common';
-import { SendTaskToQueueService } from './services/send-job-to-queue.service';
+import { SendTaskToQueueService } from './services/send-task-to-queue.service';
 import { Body } from '@nestjs/common';
 
 @Controller()
 export class TaskController {
-  constructor(private readonly sendJobToQueueService: SendTaskToQueueService) {}
+  constructor(
+    private readonly sendTaskToQueueService: SendTaskToQueueService,
+  ) {}
 
   @Post()
-  sendJobToQueue(
+  async send(
     @Body() body: { type: string; data: Record<string, any> },
-  ): void {
-    this.sendJobToQueueService.send(body.type, body.data);
+  ): Promise<{ taskId: string }> {
+    return await this.sendTaskToQueueService.send(body.type, body.data);
   }
 }

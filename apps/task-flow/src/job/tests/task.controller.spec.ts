@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TaskController } from '../task.controller';
-import { SendTaskToQueueService } from '../services/send-job-to-queue.service';
+import { SendTaskToQueueService } from '../services/send-task-to-queue.service';
 
 describe('TaskController', () => {
   let appController: TaskController;
@@ -16,7 +16,7 @@ describe('TaskController', () => {
 
   it('should send job to queue', () => {
     expect(
-      appController.sendJobToQueue({
+      appController.send({
         type: 'test',
         data: { message: 'Hello World' },
       }),
