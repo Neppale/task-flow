@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   Logger,
@@ -8,6 +7,7 @@ import {
 import { Queue } from 'bullmq';
 import Redis from 'ioredis';
 import { QueueStrategy } from '../interfaces/queue-strategy.interface';
+import { CreateTaskParams } from 'apps/task-flow/src/task/services/create-task.service';
 
 @Injectable()
 export class RedisQueueStrategy
@@ -50,16 +50,22 @@ export class RedisQueueStrategy
     return this.queues.get(queueName)!;
   }
 
-  async send(type: string, data: Record<string, any>): Promise<void> {
-    const queueName = `queue_${type}`;
+  async send(params: CreateTaskParams): Promise<void> {
+    const queueName = `queue_${params.type}`;
     const queue = this.getQueue(queueName);
 
-    await queue.add(type, data, {
-      attempts: 3,
+    await queue.add(params.type, params.data, {
+      attempts: params.retries ?? 1,
       backoff: {
         type: 'exponential',
         delay: 2000,
       },
+      delay: params.date ? params.date.getTime() - Date.now() : undefined,
+      repeat: params.cron
+        ? {
+            pattern: params.cron,
+          }
+        : undefined,
     });
   }
 }

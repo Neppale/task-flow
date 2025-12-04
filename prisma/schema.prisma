@@ -1,14 +1,14 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 enum TaskStatus {
   PENDING
+  RUNNING
   COMPLETED
   FAILED
 }
@@ -22,11 +22,15 @@ model Task {
   type         TaskType
   data         String
   status       TaskStatus  @default(PENDING)
+  cron         String?     
+  date         DateTime?
+  retries      Int         @default(0)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
   @@index([type])
   @@index([status])
   @@index([createdAt])
+  @@index([retries])
+  @@index([date])
 }
-

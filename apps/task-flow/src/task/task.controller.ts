@@ -10,6 +10,6 @@ export class TaskController {
 
   @Post()
   async send(@Body() dto: CreateTaskDto): Promise<{ taskId: string }> {
-    return await this.sendTaskToQueueService.send(dto.type, dto.data);
+    return await this.sendTaskToQueueService.send(dto);
   }
 }

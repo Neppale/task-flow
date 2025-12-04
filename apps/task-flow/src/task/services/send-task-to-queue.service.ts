@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { QueueService } from '../../../../shared/queue/services/queue.service';
-import { CreateTaskService } from './create-task.service';
+import { CreateTaskParams, CreateTaskService } from './create-task.service';
 import { UpdateTaskStatusService } from './update-task-status.service';
-import { TaskStatus, TaskType } from '@prisma/client';
+import { TaskStatus } from '@prisma/client';
 
 @Injectable()
 export class SendTaskToQueueService {
@@ -14,22 +14,15 @@ export class SendTaskToQueueService {
     private readonly updateTaskStatusService: UpdateTaskStatusService,
   ) {}
 
-  async send(
-    type: TaskType,
-    data: Record<string, any>,
-  ): Promise<{ taskId: string }> {
+  async send(params: CreateTaskParams): Promise<{ taskId: string }> {
     this.logger.log(
-      `Sending job to queue: ${type} with data: ${JSON.stringify(data)}`,
+      `Sending job to queue: ${params.type} with data: ${JSON.stringify(params.data)}`,
     );
 
-    const { id: taskId } = await this.createTaskService.create({
-      type,
-      data,
-    });
+    const { id: taskId } = await this.createTaskService.create(params);
 
     try {
-      await this.queueService.send(type, data);
-      await this.updateTaskStatusService.update(taskId, TaskStatus.COMPLETED);
+      await this.queueService.send(params);
       this.logger.log(`Task ${taskId} successfully scheduled to queue`);
       return { taskId };
     } catch (error) {

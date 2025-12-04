@@ -1,3 +1,5 @@
+import { CreateTaskParams } from 'apps/task-flow/src/task/services/create-task.service';
+
 export interface QueueStrategy {
-  send(type: string, data: Record<string, any>): Promise<void>;
+  send(params: CreateTaskParams): Promise<void>;
 }

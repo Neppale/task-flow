@@ -7,6 +7,9 @@ import { ValidateTaskService } from './validate-task.service';
 export interface CreateTaskParams {
   type: TaskType;
   data: Record<string, any>;
+  cron?: string;
+  retries?: number;
+  date?: Date;
 }
 
 @Injectable()
@@ -20,17 +23,21 @@ export class CreateTaskService {
   ) {}
 
   async create(params: CreateTaskParams): Promise<{ id: string }> {
-    const { type, data } = params;
-    await this.validateTaskService.validate({ type, data });
-    const encryptedData = this.encryptionService.encrypt(JSON.stringify(data));
+    await this.validateTaskService.validate(params);
+    const encryptedData = this.encryptionService.encrypt(
+      JSON.stringify(params.data),
+    );
 
     const task = await this.createTaskRepository.create({
-      type,
+      type: params.type,
       data: encryptedData,
       status: TaskStatus.PENDING,
+      cron: params.cron,
+      date: params.date,
+      retries: params.retries,
     });
 
-    this.logger.log(`Task ${task.id} created with type ${type}`);
+    this.logger.log(`Task ${task.id} created with type ${params.type}`);
     return { id: task.id };
   }
 }
