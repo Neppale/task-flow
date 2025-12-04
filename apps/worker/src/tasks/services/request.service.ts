@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { TaskStatus, type Task } from '@prisma/client';
-import { EncryptionService } from 'apps/shared/prisma/services/encryption.service';
-import { UpdateTaskRepository } from 'apps/task-flow/src/task/repositories/update-task.repository';
+import { EncryptionService } from '../../../../shared/prisma/services/encryption.service';
 import axios from 'axios';
+import { UpdateTaskRepository } from 'apps/task-flow/src/task/repositories/update-task.repository';
 
 @Injectable()
 export class RequestService {
@@ -15,8 +15,8 @@ export class RequestService {
   async execute(task: Task): Promise<void> {
     await this.updateTaskRepository.updateStatus(task.id, TaskStatus.RUNNING);
     try {
-      const descryptedData = this.encryptionService.decrypt(task.data);
-      const { url, method, headers, body } = JSON.parse(descryptedData);
+      const decryptedData = this.encryptionService.decrypt(task.data);
+      const { url, method, headers, body } = JSON.parse(decryptedData);
       await axios.request({
         url,
         method,

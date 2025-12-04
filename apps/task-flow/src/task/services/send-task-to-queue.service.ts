@@ -19,15 +19,15 @@ export class SendTaskToQueueService {
       `Sending job to queue: ${params.type} with data: ${JSON.stringify(params.data)}`,
     );
 
-    const { id: taskId } = await this.createTaskService.create(params);
+    const task = await this.createTaskService.create(params);
 
     try {
-      await this.queueService.send(params);
-      this.logger.log(`Task ${taskId} successfully scheduled to queue`);
-      return { taskId };
+      await this.queueService.send(task);
+      this.logger.log(`Task ${task.id} successfully scheduled to queue`);
+      return { taskId: task.id };
     } catch (error) {
-      await this.updateTaskStatusService.update(taskId, TaskStatus.FAILED);
-      this.logger.error(`Failed to schedule task ${taskId} to queue`, error);
+      await this.updateTaskStatusService.update(task.id, TaskStatus.FAILED);
+      this.logger.error(`Failed to schedule task ${task.id} to queue`, error);
       throw error;
     }
   }

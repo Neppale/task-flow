@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateTaskRepository } from '../repositories/create-task.repository';
 import { EncryptionService } from '../../../../shared/prisma/services/encryption.service';
-import { TaskStatus, TaskType } from '@prisma/client';
+import { TaskStatus, TaskType, Task } from '@prisma/client';
 import { ValidateTaskService } from './validate-task.service';
 
 export interface CreateTaskParams {
@@ -22,7 +22,7 @@ export class CreateTaskService {
     private readonly encryptionService: EncryptionService,
   ) {}
 
-  async create(params: CreateTaskParams): Promise<{ id: string }> {
+  async create(params: CreateTaskParams): Promise<Task> {
     await this.validateTaskService.validate(params);
     const encryptedData = this.encryptionService.encrypt(
       JSON.stringify(params.data),
@@ -38,6 +38,6 @@ export class CreateTaskService {
     });
 
     this.logger.log(`Task ${task.id} created with type ${params.type}`);
-    return { id: task.id };
+    return task;
   }
 }

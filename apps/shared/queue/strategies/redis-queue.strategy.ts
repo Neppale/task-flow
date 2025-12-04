@@ -23,14 +23,15 @@ export class RedisQueueStrategy
   }
 
   onModuleInit(): void {
-    this.redisConnection = new Redis(this.redisUrl, {
-      maxRetriesPerRequest: null,
-    });
-    this.logger.log('Redis connection for BullMQ initialized!');
-  }
-  catch(error) {
-    this.logger.error('Failed to connect to Redis', error);
-    throw error;
+    try {
+      this.redisConnection = new Redis(this.redisUrl, {
+        maxRetriesPerRequest: null,
+      });
+      this.logger.log('Redis connection for BullMQ initialized!');
+    } catch (error) {
+      this.logger.error('Failed to connect to Redis', error);
+      throw error;
+    }
   }
 
   async onModuleDestroy(): Promise<void> {
