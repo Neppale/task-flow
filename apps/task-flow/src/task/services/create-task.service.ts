@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateTaskRepository } from '../repositories/create-task.repository';
 import { EncryptionService } from '../../../../shared/prisma/services/encryption.service';

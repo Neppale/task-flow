@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common';
 import { TaskType } from '@prisma/client';
 import { RequestDto } from 'apps/shared/types/dto/request.dto';

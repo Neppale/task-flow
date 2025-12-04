@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { TaskType } from '@prisma/client';
 import { IsEnum, IsNotEmpty, IsObject } from 'class-validator';
 

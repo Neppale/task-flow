@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./apps/task-flow/test/jest-e2e.json",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "welcome": "ts-node utils/scripts/welcome.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
