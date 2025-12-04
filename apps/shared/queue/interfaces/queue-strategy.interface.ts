@@ -1,5 +1,5 @@
-import { CreateTaskParams } from 'apps/task-flow/src/task/services/create-task.service';
+import { Task } from '@prisma/client';
 
 export interface QueueStrategy {
-  send(params: CreateTaskParams): Promise<void>;
+  send(task: Task): Promise<void>;
 }

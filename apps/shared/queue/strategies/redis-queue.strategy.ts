@@ -7,7 +7,7 @@ import {
 import { Queue } from 'bullmq';
 import Redis from 'ioredis';
 import { QueueStrategy } from '../interfaces/queue-strategy.interface';
-import { CreateTaskParams } from 'apps/task-flow/src/task/services/create-task.service';
+import { Task } from '@prisma/client';
 
 @Injectable()
 export class RedisQueueStrategy
@@ -50,20 +50,19 @@ export class RedisQueueStrategy
     return this.queues.get(queueName)!;
   }
 
-  async send(params: CreateTaskParams): Promise<void> {
-    const queueName = `queue_${params.type}`;
-    const queue = this.getQueue(queueName);
+  async send(task: Task): Promise<void> {
+    const queue = this.getQueue('tasks');
 
-    await queue.add(params.type, params.data, {
-      attempts: params.retries ?? 1,
+    await queue.add(task.id, task, {
+      attempts: task.retries ?? 1,
       backoff: {
         type: 'exponential',
         delay: 2000,
       },
-      delay: params.date ? params.date.getTime() - Date.now() : undefined,
-      repeat: params.cron
+      delay: task.date ? task.date.getTime() - Date.now() : undefined,
+      repeat: task.cron
         ? {
-            pattern: params.cron,
+            pattern: task.cron,
           }
         : undefined,
     });

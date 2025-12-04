@@ -1,11 +1,11 @@
 # Task Flow
 
-A NestJS-based task queue management system that supports multiple queue strategies (Redis/BullMQ and RabbitMQ) for processing and managing asynchronous tasks.
+A NestJS-based task queue management system that uses Redis/BullMQ for processing and managing asynchronous tasks.
 
 ## Features
 
 - **Task Management**: Create, validate, and queue tasks
-- **Multiple Queue Strategies**: Supports both Redis (BullMQ) and RabbitMQ
+- **Queue Strategy**: Uses Redis with BullMQ
 - **Data Encryption**: Automatic encryption of task data using AES-256-GCM
 - **Type Validation**: Built-in validation using class-validator
 - **Database**: SQLite database with Prisma ORM
@@ -27,7 +27,7 @@ task-flow/
 
 - Node.js (v18+)
 - npm or yarn
-- Docker (for Redis/RabbitMQ)
+- Docker (for Redis)
 
 ## Setup
 
@@ -43,11 +43,11 @@ task-flow/
    ```env
    DATABASE_URL="file:./dev.db"
    API_PORT=3000
-   QUEUE_TYPE="REDIS" # or "RABBITMQ"
+   QUEUE_TYPE="REDIS"
    ENCRYPTION_KEY="your-secret-key-here"
    ```
 
-3. **Start Docker services (Redis/RabbitMQ):**
+3. **Start Docker services (Redis):**
 
    ```bash
    docker-compose up -d
@@ -119,8 +119,7 @@ Content-Type: application/json
 
 Set `QUEUE_TYPE` environment variable to:
 
-- `"REDIS"` - Uses Redis with BullMQ
-- `"RABBITMQ"` - Uses RabbitMQ
+- `"REDIS"` - Uses Redis with BullMQ (default)
 
 ## Database
 
