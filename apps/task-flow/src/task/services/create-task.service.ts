@@ -7,7 +7,6 @@ import { ValidateTaskService } from './validate-task.service';
 export interface CreateTaskParams {
   type: TaskType;
   data: Record<string, any>;
-  status?: TaskStatus;
 }
 
 @Injectable()
@@ -21,14 +20,14 @@ export class CreateTaskService {
   ) {}
 
   async create(params: CreateTaskParams): Promise<{ id: string }> {
-    const { type, data, status = TaskStatus.PENDING } = params;
+    const { type, data } = params;
     await this.validateTaskService.validate({ type, data });
     const encryptedData = this.encryptionService.encrypt(JSON.stringify(data));
 
     const task = await this.createTaskRepository.create({
       type,
       data: encryptedData,
-      status,
+      status: TaskStatus.PENDING,
     });
 
     this.logger.log(`Task ${task.id} created with type ${type}`);

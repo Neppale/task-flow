@@ -25,7 +25,6 @@ export class SendTaskToQueueService {
     const { id: taskId } = await this.createTaskService.create({
       type,
       data,
-      status: TaskStatus.PENDING,
     });
 
     try {
