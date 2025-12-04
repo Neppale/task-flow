@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { validate, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
@@ -45,7 +42,7 @@ export class ValidateObjectService {
     errors.forEach((error) => {
       if (error.constraints) {
         Object.values(error.constraints).forEach((message) => {
-          messages.push(`${error.property}: ${message as string}`);
+          messages.push(`${error.property}: ${message}`);
         });
       }
 

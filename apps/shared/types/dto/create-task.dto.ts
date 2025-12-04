@@ -1,5 +1,13 @@
 import { TaskType } from '@prisma/client';
-import { IsEnum, IsNotEmpty, IsObject } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  IsNumber,
+  IsDate,
+} from 'class-validator';
 
 export class CreateTaskDto {
   @IsEnum(TaskType)
@@ -9,4 +17,19 @@ export class CreateTaskDto {
   @IsObject()
   @IsNotEmpty()
   data: Record<string, any>;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  cron?: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @IsOptional()
+  retries?: number;
+
+  @IsDate()
+  @IsNotEmpty()
+  @IsOptional()
+  date?: Date;
 }

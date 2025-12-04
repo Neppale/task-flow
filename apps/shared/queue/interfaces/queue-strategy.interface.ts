@@ -1,3 +1,5 @@
+import { Task } from '@prisma/client';
+
 export interface QueueStrategy {
-  send(type: string, data: Record<string, any>): Promise<void>;
+  send(task: Task): Promise<void>;
 }

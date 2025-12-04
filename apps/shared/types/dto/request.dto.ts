@@ -1,11 +1,18 @@
 import {
   IsString,
   IsNotEmpty,
-  IsIn,
+  IsEnum,
   IsOptional,
   IsObject,
 } from 'class-validator';
 
+enum RequestMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+  PATCH = 'PATCH',
+}
 export class RequestDto {
   @IsString()
   @IsNotEmpty()
@@ -13,8 +20,8 @@ export class RequestDto {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+  @IsEnum(RequestMethod)
+  method: RequestMethod;
 
   @IsObject()
   @IsOptional()
@@ -22,5 +29,5 @@ export class RequestDto {
 
   @IsString()
   @IsOptional()
-  body?: string;
+  body?: Record<string, any>;
 }

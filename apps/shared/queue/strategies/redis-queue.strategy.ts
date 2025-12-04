@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
   Logger,
@@ -8,6 +7,7 @@ import {
 import { Queue } from 'bullmq';
 import Redis from 'ioredis';
 import { QueueStrategy } from '../interfaces/queue-strategy.interface';
+import { Task } from '@prisma/client';
 
 @Injectable()
 export class RedisQueueStrategy
@@ -23,14 +23,15 @@ export class RedisQueueStrategy
   }
 
   onModuleInit(): void {
-    this.redisConnection = new Redis(this.redisUrl, {
-      maxRetriesPerRequest: null,
-    });
-    this.logger.log('Redis connection for BullMQ initialized!');
-  }
-  catch(error) {
-    this.logger.error('Failed to connect to Redis', error);
-    throw error;
+    try {
+      this.redisConnection = new Redis(this.redisUrl, {
+        maxRetriesPerRequest: null,
+      });
+      this.logger.log('Redis connection for BullMQ initialized!');
+    } catch (error) {
+      this.logger.error('Failed to connect to Redis', error);
+      throw error;
+    }
   }
 
   async onModuleDestroy(): Promise<void> {
@@ -50,16 +51,21 @@ export class RedisQueueStrategy
     return this.queues.get(queueName)!;
   }
 
-  async send(type: string, data: Record<string, any>): Promise<void> {
-    const queueName = `queue_${type}`;
-    const queue = this.getQueue(queueName);
+  async send(task: Task): Promise<void> {
+    const queue = this.getQueue('tasks');
 
-    await queue.add(type, data, {
-      attempts: 3,
+    await queue.add(task.id, task, {
+      attempts: task.retries ?? 1,
       backoff: {
         type: 'exponential',
         delay: 2000,
       },
+      delay: task.date ? task.date.getTime() - Date.now() : undefined,
+      repeat: task.cron
+        ? {
+            pattern: task.cron,
+          }
+        : undefined,
     });
   }
 }

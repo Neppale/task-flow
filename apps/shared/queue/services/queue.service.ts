@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { QueueStrategy } from '../interfaces/queue-strategy.interface';
 import { QUEUE_STRATEGY_TOKEN } from '../queue-type.enum';
+import { Task } from '@prisma/client';
 
 @Injectable()
 export class QueueService {
@@ -9,7 +10,7 @@ export class QueueService {
     private readonly queueStrategy: QueueStrategy,
   ) {}
 
-  async send(type: string, data: Record<string, any>): Promise<void> {
-    await this.queueStrategy.send(type, data);
+  async send(task: Task): Promise<void> {
+    await this.queueStrategy.send(task);
   }
 }
